@@ -15,18 +15,13 @@
 
 GatlingGun Fuzzer allows you to access the power of our uber-fast EVM SDK.
 
-# ♨️ GatlingGun (ggun) Issues
-
-This repo is designed for raising issues, bugs, and reports related to our GatlingGun (ggun) fuzzer.
-
-## ♨️ Getting started
+# ♨️ Hackbot Human Comparison
 
 
-## ♨️ Fuzzer Documentation
+## ♨️ Summary
 
-## ♨️ Advanced
 
-## ♨️ Community
 
-Join our [Telegram Community](https://t.me/+DwI1FhzS6hxkZmI0)! We are here to answer questions and help you get the most out of GatlingGun.
+
+Join our [Telegram Community](https://t.me/+DwI1FhzS6hxkZmI0)! We are here to answer questions and help you get the most out of our hackbot.
 
