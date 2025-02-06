@@ -18,10 +18,30 @@ GatlingGun Fuzzer allows you to access the power of our uber-fast EVM SDK.
 # ♨️ Hackbot Human Comparison
 
 
+
 ## ♨️ Summary
 
+This tool analyzes contest reports to compare human and bot performance in finding vulnerabilities. It processes contest data, extracts issues and their submitters, and provides statistics on warden performance. The analysis helps understand the effectiveness of human auditors versus automated tools by tracking high and medium severity findings across contests.
 
+## 🚀 Usage Examples
 
+By default the tool will extract the top 10% of wardens based on their score.
+
+### Basic usage with C4Eval github reports
+
+```
+python human_comparison_app.py -c foundry_repos.csv --github-api-key $GITHUB_PERSONAL_ACCESS_TOKEN
+```
+
+### Basic usage with C4Eval local reports
+```
+python human_comparison_app.py -r /path/to/c4eval/reports
+```
+
+### Change the top percentile to extract stats for the human top 5%
+
+```
+python human_comparison_app.py -c foundry_repos.csv --github-api-key $GITHUB_PERSONAL_ACCESS_TOKEN --top-percentile 0.95
+```
 
 Join our [Telegram Community](https://t.me/+DwI1FhzS6hxkZmI0)! We are here to answer questions and help you get the most out of our hackbot.
-
