@@ -13,7 +13,6 @@
   </a>
 </p>
 
-GatlingGun Fuzzer allows you to access the power of our uber-fast EVM SDK.
 
 # ♨️ Hackbot Human Comparison
 
