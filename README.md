@@ -33,6 +33,12 @@ By default the tool will extract the top 10% of wardens based on their score.
 rye run python human_comparison_app.py -c foundry_repos.csv --github-api-key $GITHUB_PERSONAL_ACCESS_TOKEN
 ```
 
+### Basic usage with C4Eval github reports and save raw reports (the directory path can be relative or absolute)
+
+```
+rye run python human_comparison_app.py -c foundry_repos.csv --github-api-key $GITHUB_PERSONAL_ACCESS_TOKEN --save-raw-reports /path/to/save/raw/reports
+```
+
 ### Basic usage with C4Eval local reports
 ```
 rye run python human_comparison_app.py -r /path/to/c4eval/reports

@@ -1,4 +1,5 @@
 import argparse
+from pathlib import Path
 from human_comparison.contest_processor import ContestInput
 from human_comparison.contest_aggregate import ContestAggregator
 from human_comparison.utils.toolbox import (
@@ -36,6 +37,14 @@ def get_contest_data_from_url(url: str, github_api_key: str) -> ContestInput:
     return contest_data
 
 
+def save_raw_report(raw_report: str, file_path: Path) -> None:
+    """
+    Save the raw report to a file.
+    """
+    with open(file_path, "w") as f:
+        f.write(raw_report)
+
+
 def main(args: argparse.Namespace):
     """
     Main function to process the contest data.
@@ -54,7 +63,18 @@ def main(args: argparse.Namespace):
             contest_data.append(
                 get_contest_data_from_url(contest["findingsRepo"], args.github_api_key)
             )
+            if args.save_raw_reports:
+                Path(args.save_raw_reports).mkdir(exist_ok=True)
+                save_raw_report(
+                    contest_data[-1].raw_report,
+                    Path(args.save_raw_reports) / f"{contest_data[-1].repo_name}.md",
+                )
             count += 1
+        if args.save_raw_reports:
+            print(f"Saved raw reports to: {args.save_raw_reports}.")
+            print(
+                f"You can now run the tool with the option --from-raw-path {args.save_raw_reports} instead of --contests_csv_file and --github-api-key."
+            )
     else:
         # Load raw reports from a directory
         print(f"Loading raw reports from: {args.from_raw_path}")
@@ -111,6 +131,11 @@ if __name__ == "__main__":
         default=None,
         action="store",
     )
+    parser.add_argument(
+        "--save-raw-reports",
+        help="Whether to save the raw reports to the given directory.",
+        default=None,
+    )
     args = parser.parse_args()
 
     if not args.contests_csv_file and not args.from_raw_path:
@@ -121,4 +146,8 @@ if __name__ == "__main__":
         )
     if args.contests_csv_file and not args.github_api_key:
         parser.error("The GitHub API key must be specified when using --contests_csv_file (-c)")
+    if args.from_raw_path and args.save_raw_reports:
+        parser.error(
+            "The save-raw-reports flag cannot be specified when using --from-raw-path (-r)"
+        )
     main(args)
