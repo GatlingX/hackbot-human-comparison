@@ -11,12 +11,10 @@
   <a href="https://t.me/+DwI1FhzS6hxkZmI0">
     <img src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white&label=join our community" alt="Join our community">
   </a>
-  <a href="https://discord.gg/YOUR_INVITE_CODE">
-    <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&label=Join our community" alt="Join our community">
-</a>
   <a href="https://discord.hackbot.co">
-    <img alt="Discord" src="https://img.shields.io/discord/1309455215799566336">
+    <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&label=Join our community" alt="Join our community">
   </a>
+
 </p>
 
 
