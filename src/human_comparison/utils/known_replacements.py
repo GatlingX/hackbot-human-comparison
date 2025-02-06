@@ -10,7 +10,10 @@ class KnownReplacements:
     # Known bots in reports. Bots are not mention in the Wardens list in the report
     # but are mentioned in the issues if they are only found by the bot
     # Bot entries are in the format "bot-<bot_name>"
-    known_bots: Dict[str, List[str]] = {"2023-10-wildcat": ["henry"], "2023-08-dopex": ["IllIllI"]}
+    known_bots: Dict[str, List[str]] = {
+        "2023-10-wildcat": ["henry"],
+        "2023-08-dopex": ["IllIllI"],
+    }
 
     @classmethod
     def get_typos(cls, repo_name: str) -> Dict[str, str]:

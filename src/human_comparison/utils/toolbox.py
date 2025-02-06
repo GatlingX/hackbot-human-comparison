@@ -1,10 +1,10 @@
+import os
+import sys
+import csv
 import requests
 from urllib.parse import urlparse
 from typing import List
-import os
-import sys
 from loguru import logger as log
-import csv
 
 
 def is_valid_web_address(url: str | None) -> bool:

@@ -115,12 +115,12 @@ class ContestReport:
 class ContestProcessor:
     def __init__(
         self,
-        exclusive: bool = False,
+        exclude_zero_score: bool = False,
         upload: bool = False,
         verbose: bool = False,
         debug: bool = False,
     ):
-        self._exclusive = exclusive
+        self._exclude_zero_score = exclude_zero_score
         self._upload = upload
         self._verbose = verbose or debug
         self._debug = debug
@@ -304,7 +304,12 @@ class ContestProcessor:
 
                 self._wardens.set_warden(
                     warden_name,
-                    Warden(name=warden_name, findings=[], findings_high=0, findings_medium=0),
+                    Warden(
+                        name=warden_name,
+                        findings=[],
+                        findings_high=0,
+                        findings_medium=0,
+                    ),
                 )
 
                 line_counter += 1
@@ -378,7 +383,7 @@ class ContestProcessor:
 
     def _extract_top_stats(self) -> Tuple[int, int, LocalWardenContainer]:
         # If exclusive mode, remove wardens with 0 findings before calculating stats
-        if self._exclusive:
+        if self._exclude_zero_score:
             # Filter out wardens with no findings
             self._wardens.prune_wardens()
 

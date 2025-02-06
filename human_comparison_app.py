@@ -65,7 +65,10 @@ def main(args: argparse.Namespace):
                 contest_data.append(get_contest_data_from_raw(raw_report, file))
 
     # Initialize the aggregator
-    aggregator = ContestAggregator(exclusive=args.exclude_zero_score)
+    aggregator = ContestAggregator(
+        exclude_zero_score=args.exclude_zero_score,
+        top_percentile=float(args.top_percentile),
+    )
 
     # Process the contest data, aggregat and compute stats
     aggregator.get_top_performer_stats(contest_data)
@@ -81,6 +84,13 @@ if __name__ == "__main__":
         help="Whether to exclude low severity issue contributors from the computation.",
         default=False,
         action="store_true",
+    )
+    parser.add_argument(
+        "-p",
+        "--top-percentile",
+        help="The percentile of the top performers to compute the stats for.",
+        default=0.9,
+        action="store",
     )
     parser.add_argument(
         "-c",

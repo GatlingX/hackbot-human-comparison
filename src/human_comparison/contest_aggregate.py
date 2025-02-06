@@ -28,9 +28,9 @@ class GlobalWardenStats:
         self.avg_findings_per_contest = warden.get_total_findings()
         self.avg_findings_per_issues = float(self.total_findings) / float(self.total_issues)
 
-    def update(self, warden: Warden, exclusive: bool, report_issues: int) -> None:
+    def update(self, warden: Warden, exclude_zero_score: bool, report_issues: int) -> None:
         assert warden.name == self.name
-        if exclusive and warden.get_total_findings() == 0:
+        if exclude_zero_score and warden.get_total_findings() == 0:
             return
         self.total_findings += warden.get_total_findings()
         self.total_high += warden.findings_high
@@ -50,11 +50,11 @@ class GlobalWardenContainer:
     """Container for wardens in all contests"""
 
     _wardens_stats: Dict[str, GlobalWardenStats]
-    _exclusive: bool
+    _exclude_zero_score: bool
 
-    def __init__(self, exclusive: bool):
+    def __init__(self, exclude_zero_score: bool):
         self._wardens_stats = {}
-        self._exclusive = exclusive
+        self._exclude_zero_score = exclude_zero_score
 
     def get_all_wardens(self) -> List[GlobalWardenStats]:
         return list(self._wardens_stats.values())
@@ -69,7 +69,9 @@ class GlobalWardenContainer:
             if warden.name not in self._wardens_stats:
                 self._wardens_stats[warden.name] = GlobalWardenStats(warden, report_issues)
             else:
-                self._wardens_stats[warden.name].update(warden, self._exclusive, report_issues)
+                self._wardens_stats[warden.name].update(
+                    warden, self._exclude_zero_score, report_issues
+                )
 
     def sort_wardens(
         self,
@@ -85,7 +87,7 @@ class GlobalWardenContainer:
         sorted_hm_wardens = sorted(hm_wardens, key=sort_by, reverse=True)
         stats_str = f"\n  Total H/M wardens: {len(hm_wardens)}\n"
         stats_str += "\n".join([f"  - {warden.name}: {warden}" for warden in sorted_hm_wardens])
-        if self._exclusive:  # Changed from _inclusive to not _exclusive
+        if self._exclude_zero_score:
             # Filter wardens with total findings = 0
             no_findings_wardens = [
                 stats for stats in self._wardens_stats.values() if stats.total_findings == 0
@@ -105,26 +107,29 @@ class GlobalWardenContainer:
 class ContestAggregator:
     def __init__(
         self,
-        exclusive: bool = False,
+        exclude_zero_score: bool = False,
+        top_percentile: float = 0.9,
         verbose: bool = False,
         debug: bool = False,
     ):
-        self._exclusive = exclusive
+        self._exclude_zero_score = exclude_zero_score
+        self._top_percentile = top_percentile
+        if top_percentile < 0.0 or top_percentile > 0.99:
+            raise ValueError("top_percentile must be between 0.0 and 0.95")
         self._verbose = verbose or debug
         self._debug = debug
-        self._global_wardens = GlobalWardenContainer(exclusive=exclusive)
+        self._global_wardens = GlobalWardenContainer(exclude_zero_score=exclude_zero_score)
         set_logger()
 
     def get_warden(self, warden_name: str) -> Warden:
         return self._global_wardens.get_warden(warden_name)
 
-    def get_warden_stats(self) -> List[GlobalWardenStats]:
-        return self._global_wardens.get_warden_stats()
-
     def process_contests(self, contests: List[ContestInput]) -> None:
         for contest in contests:
             contest_processor = ContestProcessor(
-                exclusive=self._exclusive, verbose=self._verbose, debug=self._debug
+                exclude_zero_score=self._exclude_zero_score,
+                verbose=self._verbose,
+                debug=self._debug,
             )
             set_logger(contest.repo_name)
             report = contest_processor.process_contest(contest)
@@ -141,7 +146,9 @@ class ContestAggregator:
         for contest in contests:
             set_logger(contest.repo_name)
             contest_processor = ContestProcessor(
-                exclusive=self._exclusive, verbose=self._verbose, debug=self._debug
+                exclude_zero_score=self._exclude_zero_score,
+                verbose=self._verbose,
+                debug=self._debug,
             )
             report = contest_processor.process_contest(contest)
             if report is None:
@@ -155,11 +162,12 @@ class ContestAggregator:
         log.info(f"Total number of wardens on all contests: {num_wardens}")
         # Sort wardens by average findings per issues
         sorted_wardens = self._global_wardens.sort_wardens(lambda x: x.avg_findings_per_issues)
-        # Get top 10% of wardens sorted by avg findings per issues
-        num_top_wardens = max(1, int(num_wardens * 0.1))  # At least 1 warden
+        # Get top 90% of wardens sorted by avg findings per issues
+        top_limit = 1.0 - self._top_percentile
+        num_top_wardens = max(1, int(num_wardens * top_limit))  # At least 1 warden
         top_wardens = sorted_wardens[:num_top_wardens]  # Get first N since sorted ascending
 
-        log.info(f"Number of top wardens: {num_top_wardens}")
+        log.info(f"Number of top wardens in top {top_limit * 100:.1f}%: {num_top_wardens}")
         # Get max lengths for alignment
         max_name_len = max(len(w.name) for w in top_wardens)
         max_findings_len = max(len(str(w.total_findings)) for w in top_wardens)
