@@ -30,18 +30,18 @@ By default the tool will extract the top 10% of wardens based on their score.
 ### Basic usage with C4Eval github reports
 
 ```
-python human_comparison_app.py -c foundry_repos.csv --github-api-key $GITHUB_PERSONAL_ACCESS_TOKEN
+rye run python human_comparison_app.py -c foundry_repos.csv --github-api-key $GITHUB_PERSONAL_ACCESS_TOKEN
 ```
 
 ### Basic usage with C4Eval local reports
 ```
-python human_comparison_app.py -r /path/to/c4eval/reports
+rye run python human_comparison_app.py -r /path/to/c4eval/reports
 ```
 
 ### Change the top percentile to extract stats for the human top 5%
 
 ```
-python human_comparison_app.py -c foundry_repos.csv --github-api-key $GITHUB_PERSONAL_ACCESS_TOKEN --top-percentile 0.95
+rye run python human_comparison_app.py -c foundry_repos.csv --github-api-key $GITHUB_PERSONAL_ACCESS_TOKEN --top-percentile 0.95
 ```
 
 Join our [Telegram Community](https://t.me/+DwI1FhzS6hxkZmI0)! We are here to answer questions and help you get the most out of our hackbot.
