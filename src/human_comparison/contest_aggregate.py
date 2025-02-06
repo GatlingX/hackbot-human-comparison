@@ -115,7 +115,7 @@ class ContestAggregator:
         self._exclude_zero_score = exclude_zero_score
         self._top_percentile = top_percentile
         if top_percentile < 0.0 or top_percentile > 0.99:
-            raise ValueError("top_percentile must be between 0.0 and 0.95")
+            raise ValueError("top_percentile must be between 0.0 and 0.99")
         self._verbose = verbose or debug
         self._debug = debug
         self._global_wardens = GlobalWardenContainer(exclude_zero_score=exclude_zero_score)
