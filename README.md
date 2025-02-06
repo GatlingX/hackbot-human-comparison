@@ -12,6 +12,9 @@
     <img src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white&label=join our community" alt="Join our community">
   </a>
   <a href="https://discord.hackbot.co">
+    <img alt="Discord" src="https://img.shields.io/badge/discord?style=for-the-badge&logo=discord&logoColor=white&label=join our discord" alt="Join our discord">
+  </a>
+  <a href="https://discord.hackbot.co">
     <img alt="Discord" src="https://img.shields.io/discord/1309455215799566336">
   </a>
 </p>
