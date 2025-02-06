@@ -22,6 +22,16 @@
 
 This tool analyzes contest reports to compare human and bot performance in finding vulnerabilities. It processes contest data, extracts issues and their submitters, and provides statistics on warden performance. The analysis helps understand the effectiveness of human auditors versus automated tools by tracking high and medium severity findings across contests.
 
+## 🏗️ Setup
+
+This project uses [`rye`](https://rye.astral.sh/) instead of `pip` for python dependency management with a rust-based backend for blazing fast env & dependency management. To check dependencies, check `pyproject.toml`.
+
+To ensure your environment is set up correctly, run:
+
+```bash
+rye sync
+```
+
 ## 🚀 Usage Examples
 
 By default the tool will extract the top 10% of wardens based on their score.
