@@ -87,7 +87,7 @@ def download_report_md(
     else:
         # Raise an exception if the request was not successful
         raise requests.exceptions.HTTPError(
-            f"Failed to download repository: {response.status_code}"
+            f"Failed to download report.md from {repo_url}\n (raw url: {raw_url})\n with status code: {response.status_code}.\n Check that the repository exists and that your github_api_key is correct."
         )
 
 
